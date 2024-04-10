@@ -1,0 +1,22 @@
+Resultados do experimento:
+Caso: melhor
+Tamanho: 50000, Tempo medio de execucao: 0.139180 s
+Tamanho: 100000, Tempo medio de execucao: 0.288630 s
+Tamanho: 150000, Tempo medio de execucao: 0.454083 s
+Tamanho: 200000, Tempo medio de execucao: 0.583255 s
+Tamanho: 250000, Tempo medio de execucao: 0.726072 s
+Tamanho: 300000, Tempo medio de execucao: 0.850822 s
+Caso: medio
+Tamanho: 50000, Tempo medio de execucao: 0.159213 s
+Tamanho: 100000, Tempo medio de execucao: 0.333486 s
+Tamanho: 150000, Tempo medio de execucao: 0.532447 s
+Tamanho: 200000, Tempo medio de execucao: 0.717513 s
+Tamanho: 250000, Tempo medio de execucao: 0.888307 s
+Tamanho: 300000, Tempo medio de execucao: 1.076059 s
+Caso: pior
+Tamanho: 50000, Tempo medio de execucao: 0.171122 s
+Tamanho: 100000, Tempo medio de execucao: 0.347362 s
+Tamanho: 150000, Tempo medio de execucao: 0.510614 s
+Tamanho: 200000, Tempo medio de execucao: 0.642299 s
+Tamanho: 250000, Tempo medio de execucao: 0.754860 s
+Tamanho: 300000, Tempo medio de execucao: 0.870774 s
