@@ -2,30 +2,36 @@ import time
 import random
 import matplotlib.pyplot as plt
 from multiprocessing import Pool
+import sys
+sys.setrecursionlimit(300000) #configura a 'profundidade' da pilha para 10000
+
 tamanhos = [50000, 100000, 150000, 200000, 250000, 300000]
 
-def quicksort(X, IniVet, FimVet):
-    if IniVet >= FimVet:
-        return  # Condição de parada para a recursão
-
+def QuickSort(X, IniVet, FimVet, caso):
     i = IniVet
     j = FimVet
-    pivo = X[(IniVet + FimVet) // 2]
-
-    while i <= j:
-        while X[i] < pivo:
+    
+    if caso == 'pior':
+        pivo = X[IniVet]
+    else:
+        pivo = X[(IniVet + FimVet) // 2]
+        
+    while(i <= j):
+        while (X[i] < pivo):
             i += 1
-        while X[j] > pivo:
+        while (X[j] > pivo):
             j -= 1
-        if i <= j:
+        if (i <= j):
             aux = X[i]
             X[i] = X[j]
             X[j] = aux
             i += 1
             j -= 1
+    if (IniVet < j):
+        QuickSort(X, IniVet, j, caso)
+    if (i < FimVet):
+        QuickSort(X, i, FimVet, caso)
 
-    quicksort(X, IniVet, j)
-    quicksort(X, i, FimVet)
 
 
 def gerar_arranjo_aleatorio(tamanho):
@@ -48,9 +54,9 @@ def executar_experimento(caso_tamanho):
             elif caso == 'medio':
                 arr = gerar_arranjo_aleatorio(tamanho)
             elif caso == 'pior':
-                arr = gerar_arranjo_pior_caso(tamanho) 
+                arr = gerar_arranjo_ordenado(tamanho)
             tempo_inicio = time.time()
-            quicksort(arr, 0, len(arr) - 1)
+            QuickSort(arr, 0, len(arr) - 1, caso)
             tempo_fim = time.time()
             tempo_execucao = tempo_fim - tempo_inicio
             tempos.append(tempo_execucao)
