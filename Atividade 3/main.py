@@ -76,7 +76,7 @@ def plotar_resultado(caso, dados):
     plt.plot(tamanhos, [dados[tamanho] for tamanho in tamanhos], label=caso)
     plt.xlabel('Tamanho do Vetor')
     plt.ylabel('Tempo Médio de Execução (s)')
-    plt.title(f'Desempenho da Ordenação por Inserção - Caso {caso.capitalize()}')
+    plt.title(f'Desempenho da Ordenação por QuickSort - Caso {caso.capitalize()}')
     plt.legend()
     plt.show()
 
@@ -85,7 +85,7 @@ def plotar_resultados(medias):
         plt.plot(tamanhos, [dados[tamanho] for tamanho in tamanhos], label=caso)
     plt.xlabel('Tamanho do Vetor')
     plt.ylabel('Tempo Médio de Execução (s)')
-    plt.title('Desempenho da Ordenação por Inserção')
+    plt.title('Desempenho da Ordenação por QuickSort')
     plt.legend()
     plt.show()
 
