@@ -13,8 +13,26 @@ def total_distance(route, distances):
     total += distances[route[-1], route[0]]  # Voltar para o ponto inicial
     return total
 
+def greedy_search(distances):
+    num_stars = len(distances)
+    current_star = 0  # Começa do ponto inicial (sol)
+    visited_stars = [current_star]
+    remaining_stars = set(range(num_stars))
+    remaining_stars.remove(current_star)
+
+    while remaining_stars:
+        next_star = min(remaining_stars, key=lambda x: distances[current_star, x])
+        visited_stars.append(next_star)
+        remaining_stars.remove(next_star)
+        current_star = next_star
+    
+    return visited_stars
+
+def random_alpha(min_alpha, max_alpha):
+    return random.uniform(min_alpha, max_alpha)
+
 # Função GRASP para encontrar uma solução inicial
-def grasp(distances, max_iter):
+def grasp(distances, max_iter, alpha=0.5):
     best_route = None
     best_distance = float('inf')
     
@@ -24,8 +42,15 @@ def grasp(distances, max_iter):
 
         while remaining:
             current = candidate_route[-1]
-            # Seleciona o próximo ponto aleatoriamente dentre os restantes
-            next_point = min(remaining, key=lambda x: distances[current, x])
+            # Construção da lista restrita de candidatos (RCL)
+            rcl = []
+            for point in remaining:
+                if distances[current, point] <= alpha * best_distance:
+                    rcl.append(point)
+            # Se a RCL estiver vazia, selecione aleatoriamente qualquer ponto
+            if not rcl:
+                rcl = list(remaining)
+            next_point = random.choice(rcl)
             candidate_route.append(next_point)
             remaining.remove(next_point)
         
@@ -60,7 +85,7 @@ def two_opt(route, distances):
 # Carregar as coordenadas das estrelas a partir do arquivo star100.xyz
 def load_star_coordinates(filename):
     with open(filename, 'r') as file:
-        lines = file.readlines()[2:]  # Ignorar as duas primeiras linhas
+        lines = file.readlines()  # Ignorar as duas primeiras linhas
         coordinates = np.array([list(map(float, line.split()[1:])) for line in lines])
     return coordinates
 
@@ -74,12 +99,24 @@ for i in range(len(star_coordinates)):
         distances[i, j] = distance(star_coordinates[i], star_coordinates[j])
 
 # Executar o GRASP para encontrar uma solução inicial
-initial_solution = grasp(distances, max_iter=1000)
+min_alpha = 0.1
+max_alpha = 0.9
+alpha = random_alpha(min_alpha, max_alpha)
+print("Alpha aleatório:", alpha)
+
+initial_solution = grasp(distances, max_iter=1000,alpha=alpha)
 
 # Aplicar o algoritmo 2-opt para otimizar a solução
 optimized_solution, optimized_distance = two_opt(initial_solution, distances)
 
-print("Solução inicial:", initial_solution)
-print("Distância inicial:", total_distance(initial_solution, distances))
-print("Solução otimizada:", optimized_solution)
-print("Distância otimizada:", optimized_distance)
+print("Solução inicial GRASP:", initial_solution)
+print("Distância inicial GRASP:", total_distance(initial_solution, distances))
+
+print("Solução otimizada 2-opt:", optimized_solution)
+print("Distância otimizada 2-opt:", optimized_distance)
+
+# Executar a busca gulosa para encontrar uma solução
+greedy_solution = greedy_search(distances)
+
+print("Solução gulosa:", greedy_solution)
+print("Distância gulosa:", total_distance(greedy_solution, distances))
